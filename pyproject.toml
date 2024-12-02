@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools", "pybind11"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lattice"
+version = "0.0.1"
+dependencies = ["numpy >= 2.0.0", "joblib", "tqdm", "pybind11"]
+requires-python = ">= 3.10"
+readme = "README.md"
+
+[tool.setuptools]
+package-dir = { "lattice" = "lattice" }
+
+[tool.black]
+line-length = 120
