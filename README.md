@@ -1,4 +1,4 @@
-# Term Project of Machine Leaning Theory, 2024 fall
+# Term Project of Machine Learning Theory, 2024 fall
 
 ## Environment
 
