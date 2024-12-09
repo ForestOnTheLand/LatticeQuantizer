@@ -8,7 +8,7 @@ from lattice.visualize import close_points_plot
 
 def run():
     dim = 10
-    A = construction(dim, 100000000, 100, 5e-4, 1e3)
+    A = construction(dim, 100000000, 100, 5e-4, 1e3, progress_bar=False)
     with open(f"data/matrix_{dim}.npy", "wb") as file:
         np.save(file, A)
     # with open(f"data/matrix_{dim}.npy", "rb") as file:

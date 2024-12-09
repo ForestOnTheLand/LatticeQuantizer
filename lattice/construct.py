@@ -26,6 +26,7 @@ def construction(
     mu_0: float = 5e-3,
     nu: float = 2e2,
     checkpoint: NDArray | None = None,
+    progress_bar: bool = True,
 ) -> NDArray:
     """
     Main Procedure of Iterative Lattice Construction.
@@ -50,7 +51,7 @@ def construction(
     volume = np.prod(np.diag(B))
     B *= volume ** (-1 / n)
 
-    for t in tqdm(range(T)):
+    for t in (tqdm(range(T)) if progress_bar else range(T)):
         # compute learning rate
         mu = mu_0 * nu ** (-t / (T - 1))
         # sample random vector

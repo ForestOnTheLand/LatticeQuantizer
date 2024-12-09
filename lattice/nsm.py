@@ -7,7 +7,7 @@ from tqdm import tqdm
 from lattice.core import clip
 
 
-def numerical_error(B: NDArray, steps: int, progress_bar=False) -> tuple[float, float]:
+def numerical_error(B: NDArray, steps: int, progress_bar: bool = False) -> tuple[float, float]:
     """
     Numerical quantization error by sampling.
 
