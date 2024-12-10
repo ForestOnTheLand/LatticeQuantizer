@@ -60,7 +60,7 @@ void clip(int n, const double* mat, const double* vec, int* result) {
         for (int i = m; i < k; i++) {
             d[i] = k;
         }
-        for (int i = m - 1; i > 0; i--) {
+        for (int i = m - 1; i >= 0; i--) {
             if (d[i] < k) {
                 d[i] = k;
             } else {

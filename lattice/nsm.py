@@ -22,8 +22,9 @@ def numerical_error(B: NDArray, steps: int, progress_bar: bool = False) -> tuple
     n, m = B.shape
     sum = 0.0
     sum_squared = 0.0
+    rand = np.random.Generator(np.random.PCG64())
     for t in tqdm(range(steps)) if progress_bar else range(steps):
-        z = np.random.standard_normal(n)
+        z = rand.uniform(0, 1, n)
         u = clip(B, z @ B)
         y = z - u
         e = y @ B

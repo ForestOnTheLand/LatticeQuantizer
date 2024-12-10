@@ -25,6 +25,7 @@ def construction(
     Tr: int = 100,
     mu_0: float = 5e-3,
     nu: float = 2e2,
+    delta: float = 0.75,
     checkpoint: NDArray | None = None,
     progress_bar: bool = True,
 ) -> NDArray:
@@ -43,19 +44,22 @@ def construction(
     :type mu_0: float
     :param nu: ratio between initial and final step size
     :type nu: float
+    :param delta: see `lattice.core.reduce`
+    :type delta: float
     """
 
+    rand = np.random.Generator(np.random.PCG64())
     # random initialization or use checkpoint
-    B = np.random.standard_normal((n, n)) if checkpoint is None else checkpoint
-    B = orthogonalize(reduce(B))
+    B = rand.standard_normal((n, n)) if checkpoint is None else checkpoint
+    B = orthogonalize(reduce(B, delta))
     volume = np.prod(np.diag(B))
     B *= volume ** (-1 / n)
 
-    for t in (tqdm(range(T)) if progress_bar else range(T)):
+    for t in tqdm(range(T)) if progress_bar else range(T):
         # compute learning rate
         mu = mu_0 * nu ** (-t / (T - 1))
         # sample random vector
-        z = np.random.standard_normal((n,))
+        z = rand.uniform(0, 1, n)
         u = clip(B, z @ B)
         y = z - u
         e = y @ B
@@ -69,8 +73,21 @@ def construction(
             )
 
         if t % Tr == Tr - 1:
-            B = orthogonalize(reduce(B))
+            B = orthogonalize(reduce(B, delta))
             volume = np.prod(np.diag(B))
             B *= volume ** (-1 / n)
 
     return B
+
+
+def numerical_grad(G: NDArray, steps: int):
+    n, m = G.shape
+    rand = np.random.Generator(np.random.PCG64())
+    grad = np.zeros_like(G)
+    for _ in tqdm(range(steps)):
+        z = rand.uniform(0, 1, n)
+        u = clip(G, z @ G)
+        y = z - u
+        e = y @ G
+        grad += np.outer(y, e) - np.diag(np.dot(e, e) / (n * np.diag(G)))
+    return grad / steps
