@@ -58,6 +58,6 @@ def numerical_nsm(B: NDArray, steps: int = 10000000, num_process: int = 1) -> tu
         sum_error, sum_squared_error = numerical_error(B, steps, progress_bar=True)
     mean = sum_error / steps
     mean_squared = sum_squared_error / steps
-    var = mean_squared - mean**2
+    var = (mean_squared - mean**2) / (steps - 1)
 
-    return mean * coeff, var * coeff**2
+    return mean * coeff, var**0.5 * coeff

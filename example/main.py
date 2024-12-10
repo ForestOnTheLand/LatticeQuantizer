@@ -12,8 +12,10 @@ def run(dim: int):
 
     with open(f"data/matrix_{dim}.npy", "wb") as file:
         np.save(file, A)
+    # with open(f"data/matrix_{dim}.npy", "rb") as file:
+    #     A = np.load(file)
     error, var = numerical_nsm(A, num_process=32)
-    print(f"Dimension {dim}. Estimated NSM: {error} with variance {var}")
+    print(f"Dimension {dim}. Estimated NSM: {error} with deviation {var}")
 
     x, y = close_points_plot(A)
     plt.plot(x, y, label="numerical")
