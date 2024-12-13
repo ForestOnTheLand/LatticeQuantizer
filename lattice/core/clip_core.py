@@ -1,6 +1,7 @@
 import numpy as np
 from numpy.typing import NDArray
 from . import csrc
+import sys
 
 
 def clip(B: NDArray, x: NDArray) -> NDArray:
@@ -18,6 +19,6 @@ def clip(B: NDArray, x: NDArray) -> NDArray:
     """
 
     assert B.shape[0] == B.shape[1] == x.shape[0]
-    u = np.zeros(x.shape[0], dtype=np.int32)
+    u = np.empty(x.shape[0], dtype=np.int32)
     csrc.clip(B, x, u)
     return u

@@ -48,6 +48,12 @@ void clip(int n, const double* mat, const double* vec, int* result) {
         int m = k;
         do {
             if (k == n - 1) {
+                delete[] u;
+                delete[] step;
+                delete[] d;
+                delete[] p;
+                delete[] dist;
+                delete[] F;
                 return;
             }
             k++;
@@ -68,12 +74,6 @@ void clip(int n, const double* mat, const double* vec, int* result) {
             }
         }
     }
-    delete[] u;
-    delete[] step;
-    delete[] d;
-    delete[] p;
-    delete[] dist;
-    delete[] F;
 }
 
 void reduce(int n, double* mat, double delta) {

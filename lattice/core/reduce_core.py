@@ -19,6 +19,5 @@ def reduce(B: NDArray, delta: float = 0.5) -> NDArray:
     :rtype: NDArray
     """
     assert B.shape[0] == B.shape[1]
-    B = np.ascontiguousarray(B)
     csrc.reduce(B, delta)
     return B
