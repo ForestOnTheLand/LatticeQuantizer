@@ -3,7 +3,7 @@
 #include <cstring>
 #include <limits>
 
-static double dot(int n, const double* a, const double* b) {
+static inline double dot(int n, const double* a, const double* b) {
     double result = 0.0;
     for (int i = 0; i < n; i++) {
         result += a[i] * b[i];
@@ -68,7 +68,12 @@ void clip(int n, const double* mat, const double* vec, int* result) {
             }
         }
     }
-    delete[] u, step, d, p, dist, F;
+    delete[] u;
+    delete[] step;
+    delete[] d;
+    delete[] p;
+    delete[] dist;
+    delete[] F;
 }
 
 void reduce(int n, double* mat, double delta) {
@@ -127,5 +132,7 @@ void reduce(int n, double* mat, double delta) {
             break;
         }
     }
-    delete[] Q, buffer, q_norm;
+    delete[] Q;
+    delete[] buffer;
+    delete[] q_norm;
 }

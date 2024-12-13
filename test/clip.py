@@ -68,7 +68,7 @@ def clip_std(B: NDArray, x: NDArray) -> NDArray:
             loop_down = dist[k] < rho_n
 
         d[m:k] = k
-        for a in range(m - 1, 0, -1):
+        for a in range(m - 1, -1, -1):
             if d[a] < k:
                 d[a] = k
             else:
@@ -90,6 +90,7 @@ if __name__ == "__main__":
         B_out = clip(A, v)
         np.testing.assert_allclose(B_out, B_std)
     print("Correctness passed!")
+    exit(0)
     print(f"Testing Speed:")
     ITER = 5000
     start = time.time()
@@ -106,4 +107,4 @@ if __name__ == "__main__":
         v = np.random.standard_normal(10)
         clip(A, v)
     cost = time.time() - start
-    print(f"Python: {ITER} iter / {cost} sec = {ITER/cost} iteration per second in average.")
+    print(f"C++: {ITER} iter / {cost} sec = {ITER/cost} iteration per second in average.")

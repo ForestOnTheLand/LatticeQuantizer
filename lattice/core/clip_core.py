@@ -18,8 +18,6 @@ def clip(B: NDArray, x: NDArray) -> NDArray:
     """
 
     assert B.shape[0] == B.shape[1] == x.shape[0]
-    B = np.ascontiguousarray(B)
-    x = np.ascontiguousarray(x)
-    u = np.empty(x.shape[0], dtype=np.int32)
+    u = np.zeros(x.shape[0], dtype=np.int32)
     csrc.clip(B, x, u)
     return u
