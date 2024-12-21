@@ -14,4 +14,4 @@ pip install -e .
 - `./test`: Correctness for C++ code (compared with Python implementation).
 - `./lattice`: Implementation code, in Python.
 - `./csrc`: Helping code, in C++.
-- `./experiment`: Code for running experiments
+- `./experiment`: Code for running experiments and experiment results.
