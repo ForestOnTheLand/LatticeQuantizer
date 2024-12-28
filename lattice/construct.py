@@ -28,6 +28,7 @@ def construction(
     delta: float = 0.75,
     checkpoint: NDArray | None = None,
     progress_bar: bool = True,
+    seed: int | None = None,
 ) -> NDArray:
     """
     Main Procedure of Iterative Lattice Construction.
@@ -48,7 +49,7 @@ def construction(
     :type delta: float
     """
 
-    rand = np.random.Generator(np.random.PCG64())
+    rand = np.random.Generator(np.random.PCG64(seed))
     # random initialization or use checkpoint
     B = rand.standard_normal((n, n)) if checkpoint is None else checkpoint
     B = orthogonalize(reduce(B, delta))

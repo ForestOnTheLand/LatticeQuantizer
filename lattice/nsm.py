@@ -7,7 +7,7 @@ from tqdm import tqdm
 from lattice.core import clip
 
 
-def numerical_error(B: NDArray, steps: int, progress_bar: bool = False) -> tuple[float, float]:
+def numerical_error(B: NDArray, steps: int, progress_bar: bool = False, seed:int|None = None) -> tuple[float, float]:
     """
     Numerical quantization error by sampling.
 
@@ -22,7 +22,7 @@ def numerical_error(B: NDArray, steps: int, progress_bar: bool = False) -> tuple
     n, m = B.shape
     sum = 0.0
     sum_squared = 0.0
-    rand = np.random.Generator(np.random.PCG64())
+    rand = np.random.Generator(np.random.PCG64(seed))
     for t in tqdm(range(steps)) if progress_bar else range(steps):
         z = rand.uniform(0, 1, n)
         u = clip(B, z @ B)
@@ -34,7 +34,7 @@ def numerical_error(B: NDArray, steps: int, progress_bar: bool = False) -> tuple
     return sum, sum_squared
 
 
-def numerical_nsm(B: NDArray, steps: int = 10000000, num_process: int = 1) -> tuple[float, float]:
+def numerical_nsm(B: NDArray, steps: int = 10000000, num_process: int = 1, seed:int|None = None) -> tuple[float, float]:
     """
     Estimate NSM numerically.
 
@@ -51,11 +51,12 @@ def numerical_nsm(B: NDArray, steps: int = 10000000, num_process: int = 1) -> tu
     coeff = 1 / (n * np.linalg.det(B @ B.T) ** (1 / n))
     num_steps = [steps // num_process + (i < steps % num_process) for i in range(num_process)]
     if num_process > 1:
+        seeds = np.random.Generator(np.random.PCG64(seed)).integers(0, 2**32, num_process)
         with mp.Pool(num_process) as p:
-            result = np.array(p.starmap(numerical_error, zip([B] * num_process, num_steps)))
+            result = np.array(p.starmap(numerical_error, zip([B] * num_process, num_steps, [False] * num_process, seeds)))
         sum_error, sum_squared_error = result.sum(axis=0)
     else:
-        sum_error, sum_squared_error = numerical_error(B, steps, progress_bar=True)
+        sum_error, sum_squared_error = numerical_error(B, steps, progress_bar=True, seed=seed)
     mean = sum_error / steps
     mean_squared = sum_squared_error / steps
     var = (mean_squared - mean**2) / (steps - 1)
