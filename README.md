@@ -31,4 +31,4 @@ You can also try higher dimensions by running
 ```bash
 python run.py --dimensions 18 19 20
 ```
-This will take **3 days or more** as we increase running timesteps to get it converge. And it's normal if it doesn't converge to our results because we ran several times to find a best result in high dimensions.
+This will take **3 days or more** as we increase number of steps to get it converge. And it's normal if it doesn't converge to our results because we ran several times to find a best result in high dimensions.
